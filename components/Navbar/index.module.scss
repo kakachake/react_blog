@@ -1,0 +1,28 @@
+.container {
+  background-color: aliceblue;
+  height: 60px;
+  display: flex;
+  border-bottom: 1px solid #f1f1f1;
+  align-items: center;
+  justify-content: center;
+  .logoArea {
+    font-size: 30px;
+    font-weight: bold;
+    margin-right: 60px;
+  }
+  .linkArea {
+    a {
+      font-size: 18px;
+      margin: 0 10px;
+    }
+    .active {
+      color: brown;
+    }
+  }
+  .operationArea {
+    margin-left: 150px;
+    button {
+      margin: 0 10px;
+    }
+  }
+}
