@@ -5,6 +5,7 @@ import style from "./index.module.scss";
 import { Button } from "antd";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import Login from "components/Login";
 
 const NavBar: NextPage = () => {
   const { pathname } = useRouter();
@@ -13,10 +14,10 @@ const NavBar: NextPage = () => {
 
   const handleToEdit = () => {};
   const handleToLogin = () => {
-    setIsShowLogin(!isShowLogin);
+    setIsShowLogin(true);
   };
   const handleClose = () => {
-    console.log("弹窗关闭了");
+    setIsShowLogin(false);
   };
 
   return (
