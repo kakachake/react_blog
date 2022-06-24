@@ -1,7 +1,11 @@
 import { NextPage } from "next";
 import style from "./index.module.scss";
-import { Button, Input } from "antd";
+import { Button, Input, message } from "antd";
 import React, { useState } from "react";
+import CountDown from "components/CountDown";
+
+import axRequest from "request";
+
 interface LoginProps {
   isShow: boolean;
   onClose: () => void;
@@ -12,12 +16,59 @@ const Login: NextPage<LoginProps> = ({ isShow, onClose }) => {
     phone: "",
     verify: "",
   });
+  const [isShowVerifyCode, setIsShowVerifyCode] = useState(false);
   const handleClose = () => {
     onClose();
   };
-  const handleGetCode = () => {};
-  const handleLogin = () => {};
-  const handleOAuthGithub = () => {};
+  const handleGetCode = () => {
+    if (!form.phone) {
+      message.warn("请输入手机号！");
+      return;
+    } else {
+      axRequest
+        .post({
+          url: "/api/user/sendVerifyCode",
+          data: {
+            to: form.phone,
+            templateId: 1,
+          },
+        })
+        .then((res) => {
+          if (res.code === 0) {
+            setIsShowVerifyCode(true);
+          } else {
+            throw Error(res.msg || "未知错误");
+          }
+        })
+        .catch((err) => {
+          message.error(err.message);
+        });
+    }
+  };
+  const handleLogin = () => {
+    axRequest
+      .post({
+        url: "/api/user/login",
+        data: {
+          ...form,
+        },
+      })
+      .then((res) => {
+        if (res.code === 0) {
+          //登录成功
+          onClose();
+          message.success("登陆成功");
+        } else {
+          message.error(res.msg || "未知错误");
+        }
+      });
+  };
+  const handleOAuthGithub = () => {
+    console.log(11);
+  };
+  const handleCountDownEnd = () => {
+    setIsShowVerifyCode(false);
+  };
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({
       ...form,
@@ -49,7 +100,13 @@ const Login: NextPage<LoginProps> = ({ isShow, onClose }) => {
               value={form.verify}
               onChange={handleFormChange}
             />
-            <Button onClick={handleGetCode}>获取验证码</Button>
+            <Button onClick={handleGetCode}>
+              {isShowVerifyCode ? (
+                <CountDown time={10} onEnd={handleCountDownEnd} />
+              ) : (
+                "获取验证码"
+              )}
+            </Button>
           </div>
           <div className={style.loginBtn}>
             <Button type="primary" onClick={handleLogin}>

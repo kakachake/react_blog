@@ -5,6 +5,8 @@ import "styles/reset.css";
 import { ConfigProvider } from "antd";
 import zhCN from "antd/lib/locale/zh_CN";
 import "antd/dist/antd.css";
+import "reflect-metadata";
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ConfigProvider locale={zhCN}>
