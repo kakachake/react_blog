@@ -21,8 +21,15 @@
   }
   .operationArea {
     margin-left: 150px;
+    display: flex;
     button {
       margin: 0 10px;
+    }
+    .userInfoArea {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
   }
 }

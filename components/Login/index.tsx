@@ -3,6 +3,7 @@ import style from "./index.module.scss";
 import { Button, Input, message } from "antd";
 import React, { useState } from "react";
 import CountDown from "components/CountDown";
+import { useStore } from "store/index";
 
 import axRequest from "request";
 
@@ -12,6 +13,9 @@ interface LoginProps {
 }
 
 const Login: NextPage<LoginProps> = ({ isShow, onClose }) => {
+  const store = useStore();
+  console.log(store);
+
   const [form, setForm] = useState({
     phone: "",
     verify: "",
@@ -51,12 +55,14 @@ const Login: NextPage<LoginProps> = ({ isShow, onClose }) => {
         url: "/api/user/login",
         data: {
           ...form,
+          identity_type: "phone",
         },
       })
       .then((res) => {
         if (res.code === 0) {
           //登录成功
           onClose();
+          store.user.setUserInfo(res?.data);
           message.success("登陆成功");
         } else {
           message.error(res.msg || "未知错误");
