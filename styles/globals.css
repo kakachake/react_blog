@@ -4,5 +4,12 @@
 }
 
 body {
-  background-color: aquamarine;
+  background-color: #f4f5f5 !important;
+}
+
+.content-layout {
+  width: 1080px;
+  margin: 0 auto;
+  padding: 10px;
+  background-color: #fff;
 }

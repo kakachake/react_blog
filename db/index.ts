@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 
-import { UserAuth, User } from "./entity/index";
+import { UserAuth, User, Article } from "./entity/index";
 const AppDataSource = new DataSource({
   type: process.env.DATABASE_TYPE as any,
   host: process.env.DATABASE_HOST,
@@ -9,7 +9,7 @@ const AppDataSource = new DataSource({
   username: process.env.DATABASE_USERNAME,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
-  entities: [User, UserAuth],
+  entities: [User, UserAuth, Article],
   synchronize: false,
   logging: true,
 });

@@ -1,6 +1,12 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import axRequest from "request";
-import { SID, generateSign, generateAuth, APP_ID, ironOptions } from "./config";
+import {
+  SID,
+  generateSign,
+  generateAuth,
+  APP_ID,
+  ironOptions,
+} from "../config";
 import { withIronSessionApiRoute } from "iron-session/next";
 
 import { ISession } from "..";

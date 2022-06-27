@@ -29,16 +29,22 @@ const NavBar: NextPage = () => {
   };
   const { id: userId, avatar, nickname } = store.user.userInfo;
 
-  const { pathname } = useRouter();
+  const { pathname, push } = useRouter();
   const [isShowLogin, setIsShowLogin] = useState(false);
-  console.log(pathname);
 
-  const handleToEdit = () => {};
+  const handleToEdit = () => {
+    if (userId) {
+      push("/editor/new");
+    }
+  };
   const handleToLogin = () => {
     setIsShowLogin(true);
   };
   const handleClose = () => {
     setIsShowLogin(false);
+  };
+  const handleGoHome = () => {
+    push(`/user/${userId}`);
   };
   const Menus = () => {
     return (
@@ -47,7 +53,7 @@ const NavBar: NextPage = () => {
           {
             key: "1",
             label: (
-              <div key={1}>
+              <div key={1} onClick={handleGoHome}>
                 <HomeOutlined /> 个人主页
               </div>
             ),
@@ -65,34 +71,36 @@ const NavBar: NextPage = () => {
     );
   };
   return (
-    <div className={style.container}>
-      <section className={style.logoArea}>BLOG</section>
-      <section className={style.linkArea}>
-        {navs?.map((item) => {
-          return (
-            <Link key={item.label} href={item.value}>
-              <a className={pathname === item.value ? style.active : ""}>
-                {item.label}
-              </a>
-            </Link>
-          );
-        })}
-      </section>
-      <section className={style.operationArea}>
-        <Button onClick={handleToEdit}>写文章</Button>
-        {userId ? (
-          <Dropdown overlay={Menus} className={style.userInfoArea}>
-            <div>
-              <Avatar src={avatar} />
-              <span>{nickname}</span>
-            </div>
-          </Dropdown>
-        ) : (
-          <Button onClick={handleToLogin} type="primary">
-            登录
-          </Button>
-        )}
-      </section>
+    <div className={`${style.container}`}>
+      <div className={`content-layout ${style.container}`}>
+        <section className={style.logoArea}>BLOG</section>
+        <section className={style.linkArea}>
+          {navs?.map((item) => {
+            return (
+              <Link key={item.label} href={item.value}>
+                <a className={pathname === item.value ? style.active : ""}>
+                  {item.label}
+                </a>
+              </Link>
+            );
+          })}
+        </section>
+        <section className={style.operationArea}>
+          <Button onClick={handleToEdit}>写文章</Button>
+          {userId ? (
+            <Dropdown overlay={Menus} className={style.userInfoArea}>
+              <div>
+                <Avatar src={avatar} />
+                <span>{nickname}</span>
+              </div>
+            </Dropdown>
+          ) : (
+            <Button onClick={handleToLogin} type="primary">
+              登录
+            </Button>
+          )}
+        </section>
+      </div>
       <Login isShow={isShowLogin} onClose={handleClose} />
     </div>
   );

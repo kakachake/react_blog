@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { withIronSessionApiRoute } from "iron-session/next";
-import { ironOptions } from "./config";
+import { ironOptions } from "../config";
 import { ISession } from "..";
 
 import { setCookie } from "util/index";

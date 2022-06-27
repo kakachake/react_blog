@@ -9,7 +9,7 @@ import { Cookie } from "next-cookie";
 import { User } from "db/entity/";
 import { AppDataSource } from "db";
 import axRequest from "request";
-import { ironOptions } from "../user/config";
+import { ironOptions } from "../config";
 import path from "path";
 
 async function handler(req: NextApiRequest, res: NextApiResponse<any>) {

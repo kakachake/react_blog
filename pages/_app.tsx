@@ -13,13 +13,20 @@ interface IProps extends AppProps {
 }
 
 function MyApp({ initialValue, Component, pageProps }: IProps) {
-  return (
-    <StoreProvider initialValue={initialValue}>
-      <ConfigProvider locale={zhCN}>
+  const renderLayout = () => {
+    if ((Component as any).layout === null) {
+      return <Component {...pageProps} />;
+    } else {
+      return (
         <Layout>
           <Component {...pageProps} />
         </Layout>
-      </ConfigProvider>
+      );
+    }
+  };
+  return (
+    <StoreProvider initialValue={initialValue}>
+      <ConfigProvider locale={zhCN}>{renderLayout()}</ConfigProvider>
     </StoreProvider>
   );
 }

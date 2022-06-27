@@ -1,3 +1,17 @@
+import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/zh-cn";
+import dayjs from "dayjs";
+
+dayjs.extend(relativeTime);
+dayjs.locale("zh-cn"); // 全局使用简体中文
+
+export function fromNow(date?: string) {
+  if (!date) {
+    return "";
+  }
+  return dayjs(date).fromNow();
+}
+
 export const setCookie = (cookies: any, items: Record<any, any>) => {
   const expires = 24 * 60 * 60 * 1000;
   const path = "/";

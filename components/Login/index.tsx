@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import style from "./index.module.scss";
 import { Button, Input, message } from "antd";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import CountDown from "components/CountDown";
 import { useStore } from "store/index";
 
@@ -13,6 +13,7 @@ interface LoginProps {
 }
 
 const Login: NextPage<LoginProps> = ({ isShow, onClose }) => {
+  const timer = useRef(null);
   const store = useStore();
   console.log(store);
 
@@ -88,19 +89,17 @@ const Login: NextPage<LoginProps> = ({ isShow, onClose }) => {
     `
     );
     console.log(oauthWindow);
-    let timer = setInterval(() => {
-      clearInterval(timer);
-      console.log(111);
-
+    clearInterval(timer.current);
+    timer.current = setInterval(() => {
       if (oauthWindow.closed && (oauthWindow as any).isLogin === true) {
         location.reload();
-        clearInterval(timer);
+        clearInterval(timer.current);
         message.success("登陆成功");
       } else if (
         oauthWindow.closed &&
         (oauthWindow as any).isLogin === undefined
       ) {
-        clearInterval(timer);
+        clearInterval(timer.current);
         message.error("登陆失败");
       }
     }, 200);

@@ -4,13 +4,14 @@
   display: flex;
   border-bottom: 1px solid #f1f1f1;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   .logoArea {
     font-size: 30px;
     font-weight: bold;
     margin-right: 60px;
   }
   .linkArea {
+    flex: 1 1 auto;
     a {
       font-size: 18px;
       margin: 0 10px;

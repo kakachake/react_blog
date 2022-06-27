@@ -1,0 +1,15 @@
+.container {
+  margin: 0 auto;
+  .operation {
+    height: 30px;
+    display: flex;
+    .title {
+      flex: 1 1 auto;
+    }
+    .button {
+      flex: 0 0 auto;
+    }
+  }
+  .editor {
+  }
+}
