@@ -4,7 +4,6 @@ const axRequest = new AxRequest({
   baseURL: "/",
   interceptors: {
     requestInterceptor: (config) => {
-      console.log(config);
       return config;
     },
     responseInterceptor: (res) => {
@@ -15,7 +14,7 @@ const axRequest = new AxRequest({
       }
     },
     responseErrorInterceptor(error) {
-      console.log(error);
+      throw error;
     },
   },
 });

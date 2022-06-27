@@ -63,14 +63,47 @@ const Login: NextPage<LoginProps> = ({ isShow, onClose }) => {
           //登录成功
           onClose();
           store.user.setUserInfo(res?.data);
+
           message.success("登陆成功");
         } else {
           message.error(res.msg || "未知错误");
         }
       });
   };
+
   const handleOAuthGithub = () => {
-    console.log(11);
+    const client_id = process.env.NEXT_PUBLIC_GITHUB_CLIENT_Id;
+    console.log(process.env);
+
+    const redirect_uri = "http://localhost:3000/api/oauth/redirect";
+    const oauthWindow = window.open(
+      `https://github.com/login/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}`,
+      "oauthWindow",
+      `
+      menubar=no,
+      location=no,
+      resizable=yes,
+      scrollbars=yes,
+      status=yes
+    `
+    );
+    console.log(oauthWindow);
+    let timer = setInterval(() => {
+      clearInterval(timer);
+      console.log(111);
+
+      if (oauthWindow.closed && (oauthWindow as any).isLogin === true) {
+        location.reload();
+        clearInterval(timer);
+        message.success("登陆成功");
+      } else if (
+        oauthWindow.closed &&
+        (oauthWindow as any).isLogin === undefined
+      ) {
+        clearInterval(timer);
+        message.error("登陆失败");
+      }
+    }, 200);
   };
   const handleCountDownEnd = () => {
     setIsShowVerifyCode(false);

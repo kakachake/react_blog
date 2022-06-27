@@ -1,5 +1,5 @@
 export type IUserInfo = {
-  userId?: number | null;
+  id?: number | null;
   nickname?: string;
   avatar?: string;
 };
@@ -10,18 +10,22 @@ export interface IUserStore {
   setUserInfo: (value: IUserInfo) => void;
 }
 
-const userStroe = (): IUserStore => {
+const UserStore: () => IUserStore = () => {
+  const userInfo: IUserInfo = {
+    // id: 1,
+    // nickname: "kaka",
+    // avatar:
+    //   "https://p1.music.126.net/Qs4WDm3jVqpImhcfCu-oWA==/109951165700073746.jpg",
+  };
   return {
-    userInfo: {
-      userId: 1,
-      avatar:
-        "https://p1.music.126.net/0VRN6GBaPibXxfKz2UbzdA==/109951165959686617.jpg",
-      nickname: "kakachake",
-    },
-    setUserInfo: function (value) {
+    userInfo,
+    setUserInfo: function (value: IUserInfo) {
+      console.log(value);
+
       this.userInfo = value;
+      console.log(this);
     },
   };
 };
 
-export default userStroe;
+export default UserStore;

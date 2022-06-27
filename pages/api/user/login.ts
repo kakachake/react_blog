@@ -5,12 +5,12 @@ import { ISession } from "..";
 import { User } from "db/entity/user";
 import { AppDataSource } from "db";
 import { UserAuth } from "db/entity";
-
-export default withIronSessionApiRoute(handler, ironOptions);
+import { setCookie } from "util/index";
+import { Cookie } from "next-cookie";
 
 async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
   const { phone, verify, identity_type } = req.body;
-
+  const cookies = Cookie.fromApiRoute(req, res);
   const session: ISession = req.session;
   const verifyCode = session.verifyCode;
   try {
@@ -34,6 +34,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
         session.nickname = nickname;
         session.avatar = avatar;
         await session.save();
+
+        setCookie(cookies, {
+          id,
+          nickname,
+          avatar,
+        });
+
         res.send({
           code: 0,
           msg: "登录成功",
@@ -47,7 +54,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
           "https://p1.music.126.net/Qs4WDm3jVqpImhcfCu-oWA==/109951165700073746.jpg";
         user.job = "程序员";
         user.introduce = "前端程序员";
-        userAuthRepository.save(user);
+
         const userAuth = new UserAuth();
         userAuth.identifier = phone;
         userAuth.identity_type = identity_type;
@@ -62,7 +69,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
         session.nickname = nickname;
         session.avatar = avatar;
         await session.save();
-
+        setCookie(cookies, {
+          id,
+          nickname,
+          avatar,
+        });
         res.send({
           code: 0,
           msg: "登录成功",
@@ -83,3 +94,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
     });
   }
 }
+export default withIronSessionApiRoute(handler, ironOptions);

@@ -2,21 +2,33 @@ import { NextPage } from "next";
 import Link from "next/link";
 import { navs } from "./config";
 import style from "./index.module.scss";
-import { Avatar, Button, Dropdown, Menu } from "antd";
+import { Avatar, Button, Dropdown, Menu, message } from "antd";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Login from "components/Login";
 import { useStore } from "store/index";
-const menu = (
-  <Menu>
-    <Menu.Item>个人主页</Menu.Item>
-    <Menu.Item>退出</Menu.Item>
-  </Menu>
-);
+import { LoginOutlined, HomeOutlined } from "@ant-design/icons";
+import axRequest from "request";
+import { observer } from "mobx-react-lite";
 
 const NavBar: NextPage = () => {
   const store = useStore();
-  const { userId, avatar, nickname } = store.user.userInfo;
+  const handleLogout = () => {
+    axRequest
+      .post({
+        url: "/api/user/logout",
+      })
+      .then((res) => {
+        console.log(res);
+
+        if (res.code === 0) {
+          store.user.setUserInfo({});
+          message.success("退出成功");
+        }
+      });
+  };
+  const { id: userId, avatar, nickname } = store.user.userInfo;
+
   const { pathname } = useRouter();
   const [isShowLogin, setIsShowLogin] = useState(false);
   console.log(pathname);
@@ -28,7 +40,30 @@ const NavBar: NextPage = () => {
   const handleClose = () => {
     setIsShowLogin(false);
   };
-
+  const Menus = () => {
+    return (
+      <Menu
+        items={[
+          {
+            key: "1",
+            label: (
+              <div key={1}>
+                <HomeOutlined /> 个人主页
+              </div>
+            ),
+          },
+          {
+            key: "2",
+            label: (
+              <div key={2} onClick={handleLogout}>
+                <LoginOutlined /> 退出
+              </div>
+            ),
+          },
+        ]}
+      ></Menu>
+    );
+  };
   return (
     <div className={style.container}>
       <section className={style.logoArea}>BLOG</section>
@@ -46,7 +81,7 @@ const NavBar: NextPage = () => {
       <section className={style.operationArea}>
         <Button onClick={handleToEdit}>写文章</Button>
         {userId ? (
-          <Dropdown overlay={menu} className={style.userInfoArea}>
+          <Dropdown overlay={Menus} className={style.userInfoArea}>
             <div>
               <Avatar src={avatar} />
               <span>{nickname}</span>
@@ -63,4 +98,4 @@ const NavBar: NextPage = () => {
   );
 };
 
-export default NavBar;
+export default observer(NavBar);
